@@ -1,21 +1,7 @@
-from functions.get_files_content import get_file_content
+from functions.write_file import write_file
 
-#print("===============================")
-#print("Result for 'lorem.txt' file:")
-#print(get_file_content("calculator", "lorem.txt"))
-#print("===============================")
-#print("Result for 'shortlorem.txt' file:")
-#print(get_file_content("calculator", "shortlorem.txt"))
+print(write_file("calculator", "lorem.txt", "wait, this isn't lorem ipsum"))
 
-print("===============================")
-print("Result for 'main.py' file:")
-print(get_file_content("calculator", "main.py"))
-print("===============================")
-print("Result for 'pkg/calculator.py' file:")
-print(get_file_content("calculator", "pkg/calculator.py"))
-print("===============================")
-print("Result for '/bin/cat' file:")
-print(get_file_content("calculator", "/bin/cat"))
-print("===============================")
-print("Result for 'pkg/does_not_exist.py' file:")
-print(get_file_content("calculator", "pkg/does_not_exist.py"))
+print(write_file("calculator", "pkg/morelorem.txt", "lorem ipsum dolor sit amet"))
+
+print(write_file("calculator", "/tmp/temp.txt", "this should not be allowed"))
