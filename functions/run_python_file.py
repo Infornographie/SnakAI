@@ -1,5 +1,6 @@
 import os, sys, subprocess
 from time import time
+from google.genai import types
 
 def run_python_file(working_directory, file_path, args=[]):
     path = os.path.abspath(os.path.join(working_directory, file_path))
@@ -24,3 +25,23 @@ def run_python_file(working_directory, file_path, args=[]):
         return f"STDOUT:\n{completed.stdout}\nSTDERR:\n{completed.stderr}"
     except Exception as e:
         return f"Error: executing Python file: {e}"
+    
+# Schema for the function declaration
+schema_run_python = types.FunctionDeclaration(
+    name="run_python_file",
+    description="Executes a Python file located within the working directory and returns its output. The file must have a .py extension.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="The path to the Python file to execute, relative to the working directory.",
+            ),
+            "args": types.Schema(
+                type=types.Type.ARRAY,
+                items=types.Schema(type=types.Type.STRING),
+                description="A list of arguments to pass to the Python script.",
+            ),
+        },
+    ),
+)

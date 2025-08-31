@@ -2,6 +2,7 @@ import os, sys, argparse, textwrap
 from dotenv import load_dotenv 
 from google import genai 
 from google.genai import types
+from config import *
 
 #Parsing command line arguments
 class FriendlyParser(argparse.ArgumentParser):
@@ -37,14 +38,26 @@ messages = [
 response = client.models.generate_content(
     model="gemini-2.0-flash-001",
     contents=messages,
+    config=types.GenerateContentConfig(
+        system_instruction=system_prompt,
+        tools=[available_functions],
+    )
 )
+
+# Function to print the response, including function call details if present
+def print_response(response):
+    if response.function_calls:
+        for function_call_part in response.function_calls:
+            print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+        return
+    print(response.text)
 
 # Print the response
 if verbose:
     print(f"User prompt: {user_prompt}")
     print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
     print("")
-    print(response.text)
+    print_response(response)
     print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
 else:
-    print(response.text)
+    print_response(response)
