@@ -7,13 +7,14 @@
     <h3 align="center">SnakAI</h3>
     <p align="center">
         A toy AI agent in python language. It can answer one-shot questions and correct basic python code. Set to work with Google Gen AI model "gemini-2.0-flash-001" free version.
-        It's the third guided project in the Boot.Dev backend programming course. 
+        It's the third guided project in the [Boot.dev](https://www.boot.dev) backend programming course. 
     </p>
 </div>
 
 ### Built with
 
-[![Python3][Python3.js]][Python3-url]
+![Python](https://img.shields.io/badge/Python-14354C?style=flat&logo=python&logoColor=white)(https://www.python.org/)
+![Google Gemini Badge](https://img.shields.io/badge/Google%20Gemini-8E75B2?logo=googlegemini&logoColor=fff&style=for-the-badge)
 
 ## Getting Started
 
