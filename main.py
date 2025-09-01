@@ -2,7 +2,9 @@ import os, sys, argparse, textwrap
 from dotenv import load_dotenv 
 from google import genai 
 from google.genai import types
-from config import *
+from config import system_prompt
+from functions.call_function import available_functions
+from functions.call_function import call_function
 
 #Parsing command line arguments
 class FriendlyParser(argparse.ArgumentParser):
@@ -45,10 +47,15 @@ response = client.models.generate_content(
 )
 
 # Function to print the response, including function call details if present
-def print_response(response):
+def print_response(response, verbose=False):
     if response.function_calls:
         for function_call_part in response.function_calls:
-            print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+            #print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+            call = call_function(function_call_part, verbose)
+            if not call.parts or not call.parts[0].function_response:
+                raise Exception("Fatal Error: No function response received.")
+            if verbose:
+                print(f"-> {call.parts[0].function_response.response}")
         return
     print(response.text)
 
@@ -57,7 +64,7 @@ if verbose:
     print(f"User prompt: {user_prompt}")
     print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
     print("")
-    print_response(response)
+    print_response(response, verbose)
     print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
 else:
-    print_response(response)
+    print_response(response, verbose)

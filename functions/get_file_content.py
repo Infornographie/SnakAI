@@ -1,5 +1,6 @@
 import os
 from google.genai import types
+from config import MAX_CHARS
 
 def get_file_content(working_directory, file_path):
     path = os.path.abspath(os.path.join(working_directory, file_path))
@@ -13,15 +14,15 @@ def get_file_content(working_directory, file_path):
     # Read and return the file content (up to MAX_CHARS)
     try:
         with open(path, "r") as f:
-            file_content_string = f.read(MAX_CHARS + 1)
-            if len(file_content_string) > MAX_CHARS:
-                return f'{file_content_string[:-1]}[...File "{file_path}" truncated at {MAX_CHARS} characters]'
+            file_content_string = f.read(MAX_CHARS + 1) # type: ignore
+            if len(file_content_string) > MAX_CHARS: # type: ignore
+                return f'{file_content_string[:-1]}[...File "{file_path}" truncated at {MAX_CHARS} characters]' # type: ignore
             return file_content_string
     except Exception as e:
         return f"Error: {str(e)}"
     
 # Schema for the function declaration
-schema_get_files_content = types.FunctionDeclaration(
+schema_get_file_content = types.FunctionDeclaration(
     name="get_file_content",
     description="Reads and returns the content of the specified file, constrained to the working directory. If the file exceeds a certain length, it will be truncated.",
     parameters=types.Schema(
